@@ -39,11 +39,11 @@ def mostrar_estatisticas(musicas_por_decada):
         musicas = musicas_por_decada[grupo]
         mais_curta = min(musicas, key=lambda musica: musica["duracao"])
         mais_longa = max(musicas, key=lambda musica: musica["duracao"])
-        top_10 = sorted(
+        top_20 = sorted(
             musicas,
             key=lambda musica: musica["popularidade"],
             reverse=True,
-        )[:10]
+        )[:20]
         popularidade_por_genero = defaultdict(list)
         for musica in musicas:
             for genero in musica["generos"]:
@@ -67,8 +67,8 @@ def mostrar_estatisticas(musicas_por_decada):
             f"  Música mais longa: {mais_longa['nome']} "
             f"({mais_longa['duracao']:.2f} minutos)"
         )
-        print("  Top 10 músicas mais populares:")
-        for posicao, musica in enumerate(top_10, start=1):
+        print("  Top 20 músicas mais populares:")
+        for posicao, musica in enumerate(top_20, start=1):
             print(
                 f"    {posicao}. {musica['nome']} "
                 f"(popularidade: {musica['popularidade']}, "
