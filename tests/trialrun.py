@@ -16,13 +16,18 @@ def organizar_por_decada(csv_path):
         for linha in leitor:
             ano = int(linha["album_release_date"][:4])
             duracao = float(linha["track_duration_min"])
-            grupo = str(ano) if 2020 <= ano <= 2025 else f"{ano // 10 * 10}s"
+            grupo = str(ano) if 2000 <= ano <= 2025 else f"{ano // 10 * 10}s"
 
             musicas_por_decada[grupo].append(
                 {
                     "nome": linha["track_name"],
                     "duracao": duracao,
                     "popularidade": int(linha["track_popularity"]),
+                    "generos": [
+                        genero.strip()
+                        for genero in linha["artist_genres"].split(",")
+                        if genero.strip() and genero.strip().upper() != "N/A"
+                    ],
                 }
             )
 
@@ -37,6 +42,16 @@ def mostrar_estatisticas(musicas_por_decada):
         top_10 = sorted(
             musicas,
             key=lambda musica: musica["popularidade"],
+            reverse=True,
+        )[:10]
+        popularidade_por_genero = defaultdict(list)
+        for musica in musicas:
+            for genero in musica["generos"]:
+                popularidade_por_genero[genero].append(musica["popularidade"])
+
+        top_generos = sorted(
+            popularidade_por_genero.items(),
+            key=lambda item: sum(item[1]) / len(item[1]),
             reverse=True,
         )[:10]
         media = sum(musica["duracao"] for musica in musicas) / len(musicas)
@@ -58,6 +73,14 @@ def mostrar_estatisticas(musicas_por_decada):
                 f"    {posicao}. {musica['nome']} "
                 f"(popularidade: {musica['popularidade']}, "
                 f"{musica['duracao']:.2f} minutos)"
+            )
+        print("  Géneros mais populares (por popularidade média):")
+        for posicao, (genero, popularidades) in enumerate(top_generos, start=1):
+            media_popularidade = sum(popularidades) / len(popularidades)
+            print(
+                f"    {posicao}. {genero} "
+                f"(média: {media_popularidade:.2f}, "
+                f"{len(popularidades)} músicas)"
             )
 
 
