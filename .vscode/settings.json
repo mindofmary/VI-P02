@@ -3,5 +3,7 @@
         "*.copilotmd": "vscode.markdown.preview.editor",
         "*.pdf": "pdf.preview",
         "file:/**/*.csv": "jupyter-data-wrangler"
-    }
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
 }
