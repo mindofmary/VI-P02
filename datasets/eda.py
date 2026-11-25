@@ -1,5 +1,7 @@
 import pandas as pd
 
+df= pd.read_csv('datasets/spotify_data clean.csv')
+
 def clean_data(df):
 
     # Change column type to string for columns: 'track_id', 'track_name' and 5 other columns
