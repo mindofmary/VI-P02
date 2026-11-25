@@ -19,14 +19,16 @@ def clean_data(df):
 
     # Define the function to classify music era
     def classify_music_era(row):
-        if row['album_release_date'].year <= 1999:
-            return 'vinyl/CD'
+        if row['album_release_date'].year <= 1980:
+            return 'vinyl'
+        elif 1981 <= row['album_release_date'].year <= 1999:
+            return 'cassette'
         elif 2000 <= row['album_release_date'].year <= 2012:
-            return 'downloads'
+            return 'CD'
         elif 2013 <= row['album_release_date'].year <= 2019:
-            return 'streaming'
+            return 'downloads'
         else:
-            return 'short-form'
+            return 'streaming'
     # Apply the classification and assign to df
     df['music_era'] = df.apply(classify_music_era, axis=1)
     
